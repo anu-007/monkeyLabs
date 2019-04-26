@@ -1,0 +1,17 @@
+{
+    "name": "no spoilers please",
+    "description" : "Extension to hide spoiler while you are surfing web",
+    "version": "1.0",
+    "manifest_version": 2,
+    "browser_action": {
+        "default_popup": "saveme.html",
+        "default_icon": "noSpoilerPlease.png"
+    },
+    "content_scripts": [
+        {
+          "matches": ["http://*/*", "https://*/*"],
+          "js": ["contentScript.js"],
+          "run_at": "document_end"
+        }
+    ]
+}
