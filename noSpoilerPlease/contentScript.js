@@ -27,17 +27,17 @@ const dictonary = [
 const tags = "SPANEMBIULOLIDIV";
 
 const hideSpoiler = (node) => {
-    if (node == null || node.parentNode == null) return;
+    if (node == null || node.parentNode == null || node.childNodes.length == 0) return;
 
-    if(node.childNodes.length) {
-        node.childNodes.forEach((ch) => {
+    node.childNodes.forEach((ch) => {
+        if(ch.tagName) {
             let images = ch.getElementsByTagName('img');
             if(images.length) blurImages(images);
     
             const textNodes = deepText(ch);
             for(let txt of textNodes) hideNode(txt);
-        });
-    }
+        }
+    });
 };
 
 function deepText(node){
@@ -61,12 +61,12 @@ const blurImages = (images) => {
 };
 
 const hideNode = (node) => {
-    node.textContent = '[WARNING !! : SPOILER DETECTED]';
+    node.textContent = '💣 💣 ⚠ ⚠ [WARNING !! : SPOILER DETECTED] ⚠ ⚠ 💣 💣';
 };
 
 document.body.childNodes.forEach((cn) => {
     let isExist = null;
-    if(cn.innerText != "") {
+    if(cn.innerText) {
         isExist = dictonary.filter(value => -1 !== cn.innerText.indexOf(value));  
     }
     if(isExist && isExist.length != 0 && cn.parentNode && tags.match(cn.tagName) && tags.match(cn.tagName)[0] != "") {
