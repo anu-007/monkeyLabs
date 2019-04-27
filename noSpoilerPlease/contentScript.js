@@ -1,71 +1,75 @@
 const dictonary = [
-    'AVENGERS',
-    'AVENGERS END GAME',
-    'AVENGERS INFINITY WAR',
-    'END GAME',
-    'ENDGAME',
-    'TONY STARK',
-    'CAPTAIN AMERICA',
-    'HULK',
-    'THOR',
-    'BLACK WIDOW',
-    'NICK FURY',
-    'CAPTAIN MARVEL',
-    'BLACK PANTHER',
-    'DOCTOR STRANGE',
-    'SPIDER MAN',
-    'CAPTAIN MARVEL',
-    'INFINITY WAR',
-    'THANOS',
-    'INFINITY GAUNTLET',
-    'DEATH',
-    'DIED',
-    'DEAD',
-    'KILL',
-    'SNAP',
-    'SPOILER'
+    'AVENGERS', 'Avengers', 'avengers',
+    'INFINITY WAR', 'Infinity War', 'infinity war', 'infinitywar', 'INFINITYWAR', 'infinity-war', 'Infinity-War',
+    'END GAME', 'end game', 'End game', 'End Game',
+    'ENDGAME', 'endgame', 'Endgame',
+    'TONY STARK', 'Tony Stark', 'Tony stark',
+    'CAPTAIN AMERICA', 'Captain America', 'captain america',
+    'HULK', 'hulk',
+    'THOR', 'thor',
+    'BLACK WIDOW', 'black widow', "Black Widow",
+    'NICK FURY', 'nick fury', 
+    'CAPTAIN MARVEL', 'captain marvel', 'Captain Marvel',
+    'BLACK PANTHER', 'Black Panther', 'black panther',
+    'DOCTOR STRANGE', 'Docktor Strange', 'doctor strange',
+    'SPIDER MAN', 'spider man', 'Spider man',
+    'THANOS', 'thanos',
+    'INFINITY GAUNTLET', 'Infinity Gauntlet', 'infinity gauntlet',
+    'DEATH', 'death',
+    'DIED', 'died',
+    'DEAD', 'dead',
+    'KILL', 'kill',
+    'SNAP', 'snap',
+    'SPOILER', 'spoiler', 'Spoilers', 'spoilers',
+    'MARVEL', 'Marvel', 'marvel'
 ];
 
-const tags = "SPANEMBIULOLI";
+const tags = "SPANEMBIULOLIDIV";
 
 const hideSpoiler = (node) => {
-    let parent = null;
-    if(node.parentNode != null && node.parentNode.tagName != 'BODY') {
-        parent = node.parentNode;
-    }
-
     if (node == null || node.parentNode == null) return;
 
-    let images = parent.getElementsByTagName('img');
-    images.forEach((img) => {
+    if(node.childNodes.length) {
+        node.childNodes.forEach((ch) => {
+            let images = ch.getElementsByTagName('img');
+            if(images.length) blurImages(images);
+    
+            const textNodes = deepText(ch);
+            for(let txt of textNodes) hideNode(txt);
+        });
+    }
+};
+
+function deepText(node){
+    let textNodeCollection = [];
+    if(node){
+        node = node.firstChild;
+        while(node!= null){
+            if(node.nodeType == 3 && dictonary.filter(value => -1 !== node.textContent.indexOf(value)).length) {
+                textNodeCollection[textNodeCollection.length] = node;
+            } else textNodeCollection = textNodeCollection.concat(deepText(node));
+            node = node.nextSibling;
+        }
+    }
+    return textNodeCollection;
+}
+
+const blurImages = (images) => {
+    for(let img of images) {
         img.style.webkitFilter = "blur(10px)";
-    });
-
-    let lists = parent.getElementsByTagName('li');
-    lists.forEach((l) => {
-        hideNode(l);
-    });
-
-    const allChild = node.parentNode.children;
-    allChild.forEach((child) => {
-        let type = child.tagName;
-        if(tags.match(type) != null) hideNode(child);
-    })
-	hideNode(node);
+    }
 };
 
 const hideNode = (node) => {
-    console.log(node);
-	node.textContent = '[TEXT BLOCKED: SPOILER DETECTED]';
-	node.style.color = 'red'
+    node.textContent = '[WARNING !! : SPOILER DETECTED]';
 };
 
 document.body.childNodes.forEach((cn) => {
     let isExist = null;
-
-    if(cn.innerText) {
-        isExist = dictonary.filter(value => cn.innerText.toLowerCase().includes(value.toLowerCase()));    
+    if(cn.innerText != "") {
+        isExist = dictonary.filter(value => -1 !== cn.innerText.indexOf(value));  
     }
-
-    if(isExist && !(!cn.parentNode || cn.parentNode.nodeName === "BODY")) hideSpoiler(cn);
+    if(isExist && isExist.length != 0 && cn.parentNode && tags.match(cn.tagName) && tags.match(cn.tagName)[0] != "") {
+        hideSpoiler(cn);
+    }
 });
