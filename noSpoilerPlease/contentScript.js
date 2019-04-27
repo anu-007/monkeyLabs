@@ -1,3 +1,4 @@
+// keywords
 const dictonary = [
     'AVENGERS', 'Avengers', 'avengers',
     'INFINITY WAR', 'Infinity War', 'infinity war', 'infinitywar', 'INFINITYWAR', 'infinity-war', 'Infinity-War',
@@ -24,8 +25,10 @@ const dictonary = [
     'MARVEL', 'Marvel', 'marvel'
 ];
 
+// for matching tags
 const tags = "SPANEMBIULOLIDIV";
 
+// hides image and text
 const hideSpoiler = (node) => {
     if (node == null || node.parentNode == null || node.childNodes.length == 0) return;
 
@@ -40,6 +43,7 @@ const hideSpoiler = (node) => {
     });
 };
 
+//get all the text nodes which has matching text as of out keyword list
 function deepText(node){
     let textNodeCollection = [];
     if(node){
@@ -54,16 +58,19 @@ function deepText(node){
     return textNodeCollection;
 }
 
+// blurs images
 const blurImages = (images) => {
     for(let img of images) {
         img.style.webkitFilter = "blur(10px)";
     }
 };
 
+// hides the text
 const hideNode = (node) => {
     node.textContent = '💣 💣 ⚠ ⚠ [WARNING !! : SPOILER DETECTED] ⚠ ⚠ 💣 💣';
 };
 
+// init: gets all the child node of body which contains any of the above keyword
 document.body.childNodes.forEach((cn) => {
     let isExist = null;
     if(cn.innerText) {
