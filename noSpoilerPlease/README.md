@@ -5,7 +5,7 @@
 4. Go to `chrome://extensions`
 5. Click on Load Unpacked which you can see in the top left side (developer mode should be enabled).
 6. Select the path where you cloned/downloaded this project.
-7. This ![alt text](https://github.com/anu-007/monkeyLabs/blob/master/noSpoilerPlease/noSpoilerPlease.png "No spoiler please") icon should appear besides your Chrome Search bar.
+7. This ![alt text](https://github.com/anu-007/monkeyLabs/blob/master/noSpoilerPlease/noSpoilerPlease.png?raw=true "No spoiler please") icon should appear besides your Chrome Search bar.
 
 That's all no more end game spoilers !!
 
